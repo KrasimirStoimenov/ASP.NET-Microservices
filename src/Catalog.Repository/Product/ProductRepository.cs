@@ -1,7 +1,7 @@
-﻿namespace Catalog.API.Repositories;
+﻿namespace Catalog.Repositories.Product;
 
-using Catalog.API.Data.Interfaces;
-using Catalog.API.Entities;
+using Catalog.Data.Data.Interfaces;
+using Catalog.Data.Models;
 using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -15,39 +15,39 @@ public class ProductRepository : IProductRepository
         this.context = context ?? throw new ArgumentNullException(nameof(context));
     }
 
-    public async Task<Product> GetProduct(string id)
+    public async Task<ProductDataModel> GetProduct(string id)
         => await this.context
                         .Products
                         .Find(p => p.Id == id)
                         .FirstOrDefaultAsync();
 
-    public async Task<IEnumerable<Product>> GetProducts()
+    public async Task<IEnumerable<ProductDataModel>> GetProducts()
         => await this.context
                         .Products
                         .Find(p => true)
                         .ToListAsync();
 
-    public async Task<IEnumerable<Product>> GetProductsByName(string name)
+    public async Task<IEnumerable<ProductDataModel>> GetProductsByName(string name)
     {
         //FilterDefinition<Product> filter = Builders<Product>.Filter.Eq(p => p.Name, name);
         return await this.context
                         .Products
-                        .Find(p => p.Name == name)
+                        .Find(p => p.ProductName == name)
                         .ToListAsync();
     }
 
-    public async Task<IEnumerable<Product>> GetProductsByCategory(string category)
+    public async Task<IEnumerable<ProductDataModel>> GetProductsByCategory(string category)
         => await this.context
                         .Products
                         .Find(p => p.Category == category)
                         .ToListAsync();
 
-    public async Task CreateProduct(Product product)
+    public async Task CreateProduct(ProductDataModel product)
     {
         await this.context.Products.InsertOneAsync(product);
     }
 
-    public async Task<bool> UpdateProduct(Product product)
+    public async Task<bool> UpdateProduct(ProductDataModel product)
     {
         var updateResult = await this.context
                                         .Products
