@@ -24,56 +24,61 @@ public class ProductService : IProductService
         this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
     }
 
-    public async Task<ProductModel> GetProduct(string id)
+    public async Task<ProductModel> GetProductAsync(string id)
     {
         ProductDataModel dataModel = await this.repository.GetProduct(id);
+
+        if (dataModel == null)
+        {
+            this.logger.LogError($"Product with id: {id}, not found.");
+        }
 
         ProductModel mappedModel = this.mapper.Map<ProductModel>(dataModel);
 
         return mappedModel;
     }
 
-    public async Task<IEnumerable<ProductModel>> GetProducts()
+    public async Task<IEnumerable<ProductModel>> GetProductsAsync()
     {
         IEnumerable<ProductDataModel> dataModel = await this.repository.GetProducts();
 
-        ICollection<ProductModel> mappedModel = this.mapper.Map<ICollection<ProductModel>>(dataModel);
+        IEnumerable<ProductModel> mappedModel = this.mapper.Map<IEnumerable<ProductModel>>(dataModel);
 
         return mappedModel;
     }
 
-    public async Task<IEnumerable<ProductModel>> GetProductsByName(string name)
+    public async Task<IEnumerable<ProductModel>> GetProductsByNameAsync(string name)
     {
         IEnumerable<ProductDataModel> dataModel = await this.repository.GetProductsByName(name);
 
-        ICollection<ProductModel> mappedModel = this.mapper.Map<ICollection<ProductModel>>(dataModel);
+        IEnumerable<ProductModel> mappedModel = this.mapper.Map<IEnumerable<ProductModel>>(dataModel);
 
         return mappedModel;
     }
 
-    public async Task<IEnumerable<ProductModel>> GetProductsByCategory(string category)
+    public async Task<IEnumerable<ProductModel>> GetProductsByCategoryAsync(string category)
     {
         IEnumerable<ProductDataModel> dataModel = await this.repository.GetProductsByCategory(category);
 
-        ICollection<ProductModel> mappedModel = this.mapper.Map<ICollection<ProductModel>>(dataModel);
+        IEnumerable<ProductModel> mappedModel = this.mapper.Map<IEnumerable<ProductModel>>(dataModel);
 
         return mappedModel;
     }
 
-    public async Task CreateProduct(ProductModel product)
+    public async Task CreateProductAsync(ProductModel product)
     {
         ProductDataModel dataModel = this.mapper.Map<ProductDataModel>(product);
 
         await this.repository.CreateProduct(dataModel);
     }
 
-    public async Task<bool> UpdateProduct(ProductModel product)
+    public async Task<bool> UpdateProductAsync(ProductModel product)
     {
         ProductDataModel dataModel = this.mapper.Map<ProductDataModel>(product);
 
         return await this.repository.UpdateProduct(dataModel);
     }
 
-    public async Task<bool> DeleteProduct(string id)
+    public async Task<bool> DeleteProductAsync(string id)
         => await this.repository.DeleteProduct(id);
 }

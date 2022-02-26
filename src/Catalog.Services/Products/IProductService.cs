@@ -4,17 +4,17 @@ using Catalog.Services.Products.Models;
 
 public interface IProductService
 {
-    Task<ProductModel> GetProduct(string id);
+    Task<ProductModel> GetProductAsync(string id);
 
-    Task<IEnumerable<ProductModel>> GetProducts();
+    Task<IEnumerable<ProductModel>> GetProductsAsync();
 
-    Task<IEnumerable<ProductModel>> GetProductsByName(string name);
+    Task<IEnumerable<ProductModel>> GetProductsByNameAsync(string name);
 
-    Task<IEnumerable<ProductModel>> GetProductsByCategory(string category);
+    Task<IEnumerable<ProductModel>> GetProductsByCategoryAsync(string category);
 
-    Task CreateProduct(ProductModel product);
+    Task CreateProductAsync(ProductModel product);
 
-    Task<bool> UpdateProduct(ProductModel product);
+    Task<bool> UpdateProductAsync(ProductModel product);
 
-    Task<bool> DeleteProduct(string id);
+    Task<bool> DeleteProductAsync(string id);
 }
