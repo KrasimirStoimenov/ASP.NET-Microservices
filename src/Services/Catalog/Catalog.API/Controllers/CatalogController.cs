@@ -5,18 +5,18 @@ using Catalog.Services.Products.Models;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
-[Route("api/products")]
-public class ProductsController : ControllerBase
+[Route("api/v1/[controller]")]
+public class CatalogController : ControllerBase
 {
     private readonly IProductService productService;
 
-    public ProductsController(IProductService productService)
+    public CatalogController(IProductService productService)
     {
         this.productService = productService ?? throw new ArgumentNullException(nameof(productService));
     }
 
     [HttpGet]
-    [ProducesResponseType(typeof(ICollection<ProductModel>), 200)]
+    [ProducesResponseType(typeof(IEnumerable<ProductModel>), 200)]
     public async Task<ActionResult<IEnumerable<ProductModel>>> GetProducts()
     {
         IEnumerable<ProductModel> result = await this.productService.GetProductsAsync();
@@ -27,7 +27,7 @@ public class ProductsController : ControllerBase
     [HttpGet]
     [ProducesResponseType(typeof(ProductModel), 200)]
     [Route("{id}")]
-    public async Task<ActionResult<ProductModel>> GetProduct
+    public async Task<ActionResult<ProductModel>> GetProductById
         ([FromRoute] string id)
     {
         ProductModel result = await this.productService.GetProductAsync(id);
@@ -37,7 +37,7 @@ public class ProductsController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<ProductModel>), 200)]
-    [Route("category/{category}")]
+    [Route("[action]/{category}")]
     public async Task<ActionResult<IEnumerable<ProductModel>>> GetProductsByCategory
         ([FromRoute] string category)
     {
@@ -48,7 +48,7 @@ public class ProductsController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<ProductModel>), 200)]
-    [Route("name/{name}")]
+    [Route("[action]/{name}")]
     public async Task<ActionResult<IEnumerable<ProductModel>>> GetProductsByName
         ([FromRoute] string name)
     {
@@ -64,7 +64,7 @@ public class ProductsController : ControllerBase
     {
         await this.productService.CreateProductAsync(product);
 
-        return this.CreatedAtRoute("/", new { id = product.Id }, product);
+        return this.CreatedAtAction("GetProductById", new { id = product.Id }, product);
     }
 
     [HttpPut]
@@ -79,7 +79,7 @@ public class ProductsController : ControllerBase
 
     [HttpDelete]
     [ProducesResponseType(typeof(void), 200)]
-    [Route("id")]
+    [Route("{id}")]
     public async Task<IActionResult> DeleteProduct
         ([FromRoute] string id)
     {

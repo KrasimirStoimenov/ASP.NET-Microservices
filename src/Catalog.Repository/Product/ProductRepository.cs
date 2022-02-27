@@ -32,7 +32,7 @@ public class ProductRepository : IProductRepository
         //FilterDefinition<Product> filter = Builders<Product>.Filter.Eq(p => p.Name, name);
         return await this.context
                         .Products
-                        .Find(p => p.ProductName == name)
+                        .Find(p => p.Name == name)
                         .ToListAsync();
     }
 
