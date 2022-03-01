@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Catalog.Services\Catalog.Services.csproj" />
+    <ProjectReference Include="..\Catalog.Services\Catalog.Services.csproj" />
   </ItemGroup>
 
 </Project>
