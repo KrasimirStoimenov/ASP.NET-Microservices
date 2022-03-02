@@ -1,21 +1,19 @@
-﻿namespace Basket.Data.Models;
-public class ShoppingCartDataModel
+﻿namespace Basket.API.Models;
+public class ShoppingCart
 {
-    public ShoppingCartDataModel()
+    public ShoppingCart()
     {
     }
 
-    public ShoppingCartDataModel(string username)
+    public ShoppingCart(string username)
     {
-        this.Username = username;
+        Username = username;
     }
 
     public string Username { get; set; }
 
-    public ICollection<ShoppingCartItemDataModel> ShoppingCartItems { get; set; }
+    public ICollection<ShoppingCartItem> ShoppingCartItems { get; set; }
 
-
-    //TODO: ServiceLayer
     public decimal TotalPrice
     {
         get
