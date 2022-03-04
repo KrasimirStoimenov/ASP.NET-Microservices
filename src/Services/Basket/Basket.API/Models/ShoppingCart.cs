@@ -12,7 +12,7 @@ public class ShoppingCart
 
     public string Username { get; set; }
 
-    public ICollection<ShoppingCartItem> ShoppingCartItems { get; set; }
+    public ICollection<ShoppingCartItem> ShoppingCartItems { get; set; } = new List<ShoppingCartItem>();
 
     public decimal TotalPrice
     {
