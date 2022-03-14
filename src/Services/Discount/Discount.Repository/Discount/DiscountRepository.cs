@@ -19,7 +19,7 @@ public class DiscountRepository : IDiscountRepository
         this.context = context ?? throw new ArgumentNullException(nameof(context));
     }
 
-    public async Task<Coupon> GetDiscount(string productName)
+    public async Task<CouponDataModel> GetDiscount(string productName)
     {
         using var connection = this.context.OpenDbConnection();
 
@@ -28,12 +28,12 @@ public class DiscountRepository : IDiscountRepository
         string query = DiscountSqlConstants.GetDiscount;
         SqlParameter[] sqlParams = new SqlParameter[] { productNameParam };
 
-        Coupon coupon = await connection
-            .QueryFirstOrDefaultAsync<Coupon>(query, productNameParam);
+        CouponDataModel coupon = await connection
+            .QueryFirstOrDefaultAsync<CouponDataModel>(query, productNameParam);
 
         if (coupon == null)
         {
-            return new Coupon
+            return new CouponDataModel
             {
                 ProductName = "No Discount",
                 Amount = 0,
@@ -44,7 +44,7 @@ public class DiscountRepository : IDiscountRepository
         return coupon;
     }
 
-    public async Task<bool> CreateDiscount(Coupon coupon)
+    public async Task<bool> CreateDiscount(CouponDataModel coupon)
     {
         using var connection = this.context.OpenDbConnection();
 
@@ -61,7 +61,7 @@ public class DiscountRepository : IDiscountRepository
         return affected > 0;
     }
 
-    public async Task<bool> UpdateDiscount(Coupon coupon)
+    public async Task<bool> UpdateDiscount(CouponDataModel coupon)
     {
         using var connection = this.context.OpenDbConnection();
 

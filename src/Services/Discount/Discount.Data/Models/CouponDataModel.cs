@@ -1,5 +1,5 @@
 ﻿namespace Discount.Data.Models;
-public class Coupon
+public class CouponDataModel
 {
     public int Id { get; set; }
 
