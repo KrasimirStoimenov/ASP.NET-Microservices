@@ -2,6 +2,7 @@
 
 using Catalog.Services.Products;
 using Catalog.Services.Products.Models;
+
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]

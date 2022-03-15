@@ -1,4 +1,3 @@
-using AutoMapper;
 using Catalog.Data.Data;
 using Catalog.Data.Data.Interfaces;
 using Catalog.Repositories.Product;
@@ -19,7 +18,7 @@ builder.Services.AddAutoMapper(options =>
 {
     options.AddProfile<MappingProfile>();
 });
-builder.Services.AddTransient<ICatalogContext, CatalogContext>();
+builder.Services.AddScoped<ICatalogContext, CatalogContext>();
 builder.Services.AddTransient<IProductRepository, ProductRepository>();
 builder.Services.AddTransient<IProductService, ProductService>();
 
