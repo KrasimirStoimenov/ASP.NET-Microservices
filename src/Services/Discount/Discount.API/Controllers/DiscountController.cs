@@ -28,9 +28,9 @@ public class DiscountController : ControllerBase
     }
 
     [HttpPost]
-    [ProducesResponseType(typeof(CouponModel), 200)]
-    public async Task<ActionResult<CouponModel>> CreateDiscount(
-        [FromBody] CouponModel coupon)
+    [ProducesResponseType(typeof(CouponInputModel), 200)]
+    public async Task<ActionResult<CouponInputModel>> CreateDiscount(
+        [FromBody] CouponInputModel coupon)
     {
         await this.discountService.CreateDiscountAsync(coupon);
 

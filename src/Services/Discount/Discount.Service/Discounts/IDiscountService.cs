@@ -6,7 +6,7 @@ public interface IDiscountService
 {
     Task<CouponModel> GetDiscountAsync(string productName);
 
-    Task<bool> CreateDiscountAsync(CouponModel coupon);
+    Task<bool> CreateDiscountAsync(CouponInputModel coupon);
 
     Task<bool> UpdateDiscountAsync(CouponModel coupon);
 

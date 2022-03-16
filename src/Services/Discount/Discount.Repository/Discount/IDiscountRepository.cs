@@ -6,7 +6,7 @@ public interface IDiscountRepository
 {
     Task<CouponDataModel> GetDiscount(string productName);
 
-    Task<bool> CreateDiscount(CouponDataModel coupon);
+    Task<bool> CreateDiscount(CouponInputDataModel coupon);
 
     Task<bool> UpdateDiscount(CouponDataModel coupon);
 

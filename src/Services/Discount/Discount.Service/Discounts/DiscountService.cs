@@ -28,9 +28,9 @@ public class DiscountService : IDiscountService
         return mappedModel;
     }
 
-    public async Task<bool> CreateDiscountAsync(CouponModel coupon)
+    public async Task<bool> CreateDiscountAsync(CouponInputModel coupon)
     {
-        CouponDataModel dataModel = this.mapper.Map<CouponDataModel>(coupon);
+        CouponInputDataModel dataModel = this.mapper.Map<CouponInputDataModel>(coupon);
 
         return await this.repository.CreateDiscount(dataModel);
     }

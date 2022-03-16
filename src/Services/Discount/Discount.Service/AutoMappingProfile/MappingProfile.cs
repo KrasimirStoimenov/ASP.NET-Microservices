@@ -9,6 +9,7 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
+        this.CreateMap<CouponInputModel, CouponInputDataModel>();
         this.CreateMap<CouponModel, CouponDataModel>();
         this.CreateMap<CouponDataModel, CouponModel>();
     }

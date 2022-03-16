@@ -1,6 +1,4 @@
 ﻿namespace Discount.Repositories.Discount;
-
-using System.Data.SqlClient;
 using System.Threading.Tasks;
 
 using Dapper;
@@ -23,13 +21,10 @@ public class DiscountRepository : IDiscountRepository
     {
         using var connection = this.context.OpenDbConnection();
 
-        SqlParameter productNameParam = new SqlParameter("@ProductName", productName);
-
         string query = DiscountSqlConstants.GetDiscount;
-        SqlParameter[] sqlParams = new SqlParameter[] { productNameParam };
 
         CouponDataModel coupon = await connection
-            .QueryFirstOrDefaultAsync<CouponDataModel>(query, productNameParam);
+            .QueryFirstOrDefaultAsync<CouponDataModel>(query, new { ProductName = productName });
 
         if (coupon == null)
         {
@@ -44,19 +39,14 @@ public class DiscountRepository : IDiscountRepository
         return coupon;
     }
 
-    public async Task<bool> CreateDiscount(CouponDataModel coupon)
+    public async Task<bool> CreateDiscount(CouponInputDataModel coupon)
     {
         using var connection = this.context.OpenDbConnection();
 
-        SqlParameter productNameParam = new SqlParameter("@ProductName", coupon.ProductName);
-        SqlParameter descriptionParam = new SqlParameter("@Description", coupon.Description);
-        SqlParameter amountParam = new SqlParameter("@Amount", coupon.Amount);
-
         string query = DiscountSqlConstants.CreateDiscount;
-        SqlParameter[] sqlParams = new SqlParameter[] { productNameParam, descriptionParam, amountParam };
 
         int affected = await connection
-            .ExecuteAsync(query, sqlParams);
+            .ExecuteAsync(query, new { ProductName = coupon.ProductName, Description = coupon.Description, Amount = coupon.Amount });
 
         return affected > 0;
     }
@@ -65,16 +55,10 @@ public class DiscountRepository : IDiscountRepository
     {
         using var connection = this.context.OpenDbConnection();
 
-        SqlParameter couponIdParam = new SqlParameter("@Id", coupon.Id);
-        SqlParameter productNameParam = new SqlParameter("@ProductName", coupon.ProductName);
-        SqlParameter descriptionParam = new SqlParameter("@Description", coupon.Description);
-        SqlParameter amountParam = new SqlParameter("@Amount", coupon.Amount);
-
         string query = DiscountSqlConstants.UpdateDiscount;
-        SqlParameter[] sqlParams = new SqlParameter[] { couponIdParam, productNameParam, descriptionParam, amountParam };
 
-        int affected = await connection
-            .ExecuteAsync(query, sqlParams);
+        var affected = await connection
+            .ExecuteAsync(query, new { ProductName = coupon.ProductName, Description = coupon.Description, Amount = coupon.Amount, Id = coupon.Id });
 
         return affected > 0;
     }
@@ -83,13 +67,10 @@ public class DiscountRepository : IDiscountRepository
     {
         using var connection = this.context.OpenDbConnection();
 
-        SqlParameter productNameParam = new SqlParameter("@ProductName", productName);
-
         string query = DiscountSqlConstants.DeleteDiscount;
-        SqlParameter[] sqlParams = new SqlParameter[] { productNameParam };
 
-        int affected = await connection
-            .ExecuteAsync(query, sqlParams);
+        var affected = await connection
+            .ExecuteAsync(query, new { ProductName = productName });
 
         return affected > 0;
     }
