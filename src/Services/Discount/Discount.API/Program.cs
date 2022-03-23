@@ -1,3 +1,4 @@
+using Discount.API.Extensions;
 using Discount.Data.DataContext;
 using Discount.Repositories.Discount;
 using Discount.Service.AutoMappingProfile;
@@ -33,5 +34,7 @@ if (app.Environment.IsDevelopment())
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MigrateDatabase<Program>();
 
 app.Run();
