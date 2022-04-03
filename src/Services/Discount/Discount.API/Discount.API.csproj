@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Discount.Extensions\Discount.Extensions.csproj" />
     <ProjectReference Include="..\Discount.Service\Discount.Service.csproj" />
   </ItemGroup>
 

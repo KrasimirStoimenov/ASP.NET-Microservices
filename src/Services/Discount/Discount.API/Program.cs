@@ -1,5 +1,5 @@
-using Discount.API.Extensions;
 using Discount.Data.DataContext;
+using Discount.Extensions;
 using Discount.Repositories.Discount;
 using Discount.Service.AutoMappingProfile;
 using Discount.Service.Discounts;
