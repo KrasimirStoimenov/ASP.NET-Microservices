@@ -46,9 +46,9 @@ public class DiscountController : ControllerBase
     }
 
     [HttpDelete]
-    [ProducesResponseType(typeof(CouponModel), 200)]
+    [ProducesResponseType(typeof(void), 200)]
     [Route("{productName}")]
-    public async Task<ActionResult<CouponModel>> DeleteDisount(
+    public async Task<ActionResult<bool>> DeleteDisount(
         [FromRoute] string productName)
     {
         return this.Ok(await this.discountService.DeleteDiscountAsync(productName));
