@@ -1,4 +1,7 @@
+using Basket.API.GrpcServices;
 using Basket.API.Repositories;
+
+using Discount.Grpc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +18,13 @@ builder.Services.AddStackExchangeRedisCache(options =>
 });
 
 builder.Services.AddTransient<IBasketRepository, BasketRepository>();
+builder.Services.AddScoped<DiscountGrpcService>();
+
+builder.Services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(options =>
+{
+    options.Address = new Uri(builder.Configuration.GetValue<string>("GrpcSettings:DiscountUrl"));
+});
+
 
 var app = builder.Build();
 

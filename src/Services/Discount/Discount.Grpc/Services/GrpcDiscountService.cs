@@ -5,38 +5,28 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using Discount.Service.AutoMappingProfile;
 using Discount.Service.Discounts;
 using Discount.Service.Discounts.Models;
 
 using global::Grpc.Core;
 
-public class DiscountService : DiscountProtoService.DiscountProtoServiceBase
+public class GrpcDiscountService : DiscountProtoService.DiscountProtoServiceBase
 {
     private readonly IDiscountService discountService;
     private readonly IMapper mapper;
-    private readonly ILogger<DiscountService> logger;
+    private readonly ILogger<GrpcDiscountService> logger;
 
-    public DiscountService(
+    public GrpcDiscountService(
         IDiscountService discountService,
         IMapper mapper,
-        ILogger<DiscountService> logger)
+        ILogger<GrpcDiscountService> logger)
     {
         this.discountService = discountService ?? throw new ArgumentNullException(nameof(discountService));
         this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-
-        var configuration = new MapperConfiguration(cfg =>
-        {
-            cfg.AddProfile<MappingProfile>();
-            cfg.CreateMap<CouponModel, GrpcCouponModel>();
-            cfg.CreateMap<GrpcCouponModel, CouponModel>();
-            cfg.CreateMap<CouponInputModel, GrpcCouponModel>();
-            cfg.CreateMap<GrpcCouponModel, CouponInputModel>();
-        });
     }
 
-    public override async Task<GrpcCouponModel> GetDisocount(GetDiscountRequest request, ServerCallContext context)
+    public override async Task<GrpcCouponModel> GetDiscount(GetDiscountRequest request, ServerCallContext context)
     {
         CouponModel coupon = await this.discountService.GetDiscountAsync(request.ProductName);
 
