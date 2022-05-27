@@ -9,7 +9,9 @@ using MediatR;
 
 using Microsoft.Extensions.Logging;
 
+using Ordering.Application.Exceptions;
 using Ordering.Application.Interfaces.Persistence;
+using Ordering.Domain.Entities;
 
 public class DeleteOrderCommandHandler : IRequestHandler<DeleteOrderCommand>
 {
@@ -30,11 +32,9 @@ public class DeleteOrderCommandHandler : IRequestHandler<DeleteOrderCommand>
     public async Task<Unit> Handle(DeleteOrderCommand request, CancellationToken cancellationToken)
     {
         var orderToDelete = await this.orderRepository.GetByIdAsync(request.Id);
-
         if (orderToDelete == null)
         {
-            this.logger.LogError("Order not exist on database");
-            //throw new NotFoundException(nameof(Order), request.Id);
+            throw new NotFoundException(nameof(Order), request.Id);
         }
 
         await this.orderRepository.DeleteAsync(orderToDelete);

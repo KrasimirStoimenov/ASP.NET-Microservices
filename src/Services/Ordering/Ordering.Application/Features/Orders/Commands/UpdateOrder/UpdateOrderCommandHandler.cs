@@ -9,6 +9,7 @@ using MediatR;
 
 using Microsoft.Extensions.Logging;
 
+using Ordering.Application.Exceptions;
 using Ordering.Application.Interfaces.Persistence;
 using Ordering.Domain.Entities;
 
@@ -31,11 +32,9 @@ public class UpdateOrderCommandHandler : IRequestHandler<UpdateOrderCommand>
     public async Task<Unit> Handle(UpdateOrderCommand request, CancellationToken cancellationToken)
     {
         var orderToUpdate = await this.orderRepository.GetByIdAsync(request.Id);
-
         if (orderToUpdate == null)
         {
-            this.logger.LogError("Order not exist on database");
-            //throw new NotFoundException(nameof(Order), request.Id);
+            throw new NotFoundException(nameof(Order), request.Id);
         }
 
         this.mapper.Map(request, orderToUpdate, typeof(UpdateOrderCommand), typeof(Order));
