@@ -11,7 +11,7 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
-        this.CreateMap<Order, OrderDataModel>().ReverseMap();
+        this.CreateMap<Order, OrderModel>().ReverseMap();
         this.CreateMap<Order, CheckoutOrderCommand>().ReverseMap();
         this.CreateMap<Order, UpdateOrderCommand>().ReverseMap();
     }

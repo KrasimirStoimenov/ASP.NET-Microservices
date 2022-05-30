@@ -1,5 +1,5 @@
 ﻿namespace Ordering.Application.Features.Orders.Queries.GetOrdersList;
-public class OrderDataModel
+public class OrderModel
 {
     public int Id { get; set; }
     public string Username { get; set; }

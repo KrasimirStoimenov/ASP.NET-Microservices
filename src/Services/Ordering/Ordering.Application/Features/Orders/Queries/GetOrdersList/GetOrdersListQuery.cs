@@ -2,7 +2,7 @@
 
 using MediatR;
 
-public class GetOrdersListQuery : IRequest<ICollection<OrderDataModel>>
+public class GetOrdersListQuery : IRequest<ICollection<OrderModel>>
 {
     public GetOrdersListQuery(string username)
     {

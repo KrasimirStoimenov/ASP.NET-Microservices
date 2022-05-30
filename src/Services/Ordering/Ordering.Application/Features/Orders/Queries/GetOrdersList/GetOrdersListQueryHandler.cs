@@ -8,7 +8,7 @@ using MediatR;
 
 using Ordering.Application.Interfaces.Persistence;
 
-public class GetOrdersListQueryHandler : IRequestHandler<GetOrdersListQuery, ICollection<OrderDataModel>>
+public class GetOrdersListQueryHandler : IRequestHandler<GetOrdersListQuery, ICollection<OrderModel>>
 {
     private readonly IOrderRepository orderRepository;
     private readonly IMapper mapper;
@@ -18,11 +18,11 @@ public class GetOrdersListQueryHandler : IRequestHandler<GetOrdersListQuery, ICo
         this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
     }
 
-    public async Task<ICollection<OrderDataModel>> Handle(GetOrdersListQuery request, CancellationToken cancellationToken)
+    public async Task<ICollection<OrderModel>> Handle(GetOrdersListQuery request, CancellationToken cancellationToken)
     {
         var orders = await this.orderRepository.GetOrdersByUsernameAsync(request.Username);
 
-        var mappedModels = this.mapper.Map<ICollection<OrderDataModel>>(orders);
+        var mappedModels = this.mapper.Map<ICollection<OrderModel>>(orders);
 
         return mappedModels;
     }
