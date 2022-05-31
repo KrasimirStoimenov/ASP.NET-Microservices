@@ -43,7 +43,7 @@ public class EmailService : IEmailService
 
         this.logger.LogInformation("Email sent.");
 
-        if (response.StatusCode == System.Net.HttpStatusCode.Accepted || response.StatusCode == System.Net.HttpStatusCode.Ok)
+        if (response.StatusCode == System.Net.HttpStatusCode.Accepted || response.StatusCode == System.Net.HttpStatusCode.OK)
         {
             return true;
         }
