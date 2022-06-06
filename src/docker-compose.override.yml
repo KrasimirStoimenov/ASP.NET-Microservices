@@ -38,6 +38,16 @@ services:
     volumes:
       - mssql_data:/var/lib/mssqlql/data
 
+  rabbitmq:
+    container_name: rabbitmq
+    environment:
+        - RABBITMQ_DEFAULT_USER=admin
+        - RABBITMQ_DEFAULT_PASS=admin123
+    restart: always
+    ports:
+        - "5672:5672" 
+        - "15672:15672"
+
   pgadmin:
     container_name: pgadmin
     environment:
