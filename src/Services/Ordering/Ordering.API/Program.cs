@@ -2,6 +2,7 @@ using EventBus.Messages.Common;
 
 using MassTransit;
 
+using Ordering.API.AutoMappingProfile;
 using Ordering.API.EventBusConsumer;
 using Ordering.API.Extensions;
 using Ordering.Application;
@@ -19,6 +20,13 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
+
+builder.Services.AddScoped<BasketCheckoutConsumer>();
+
+builder.Services.AddAutoMapper(options =>
+{
+    options.AddProfile<MappingProfile>();
+});
 
 //MassTransit - RabbitMQ Configuration
 builder.Services.AddMassTransit(config =>
