@@ -1,6 +1,6 @@
 {
   "Routes": [
-      //Catalog API
+    //Catalog API
     {
       "DownstreamPathTemplate": "/api/v1/Catalog",
       "DownstreamScheme": "http",
@@ -11,7 +11,8 @@
         }
       ],
       "UpstreamPathTemplate": "/Catalog",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT" ]
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT" ],
+      "FileCacheOptions": { "TtlSeconds": 30 }
     },
     {
       "DownstreamPathTemplate": "/api/v1/Catalog/{id}",
@@ -49,7 +50,7 @@
       "UpstreamPathTemplate": "/Catalog/GetProductsByName/{name}",
       "UpstreamHttpMethod": [ "GET" ]
     },
-      //Basket API
+    //Basket API
     {
       "DownstreamPathTemplate": "/api/v1/Basket",
       "DownstreamScheme": "http",
@@ -84,9 +85,16 @@
         }
       ],
       "UpstreamPathTemplate": "/Basket/Checkout",
-      "UpstreamHttpMethod": [ "POST" ]
+      "UpstreamHttpMethod": [ "POST" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "3s",
+        "PeriodTimespan": 1,
+        "Limit": 1
+      }
     },
-      //Discount API
+    //Discount API
     {
       "DownstreamPathTemplate": "/api/v1/Discount",
       "DownstreamScheme": "http",
@@ -111,7 +119,7 @@
       "UpstreamPathTemplate": "/Discount/{productName}",
       "UpstreamHttpMethod": [ "GET", "DELETE" ]
     },
-      //Order API
+    //Order API
     {
       "DownstreamPathTemplate": "/api/v1/Order/{username}",
       "DownstreamScheme": "http",
