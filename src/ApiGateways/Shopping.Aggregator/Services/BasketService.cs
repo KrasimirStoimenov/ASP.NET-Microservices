@@ -2,6 +2,7 @@
 
 using System.Threading.Tasks;
 
+using Shopping.Aggregator.Extensions;
 using Shopping.Aggregator.Models;
 using Shopping.Aggregator.Services.Interfaces;
 
@@ -14,8 +15,9 @@ public class BasketService : IBasketService
         this.client = client ?? throw new ArgumentNullException(nameof(client));
     }
 
-    public Task<BasketModel> GetBasket(string username)
+    public async Task<BasketModel> GetBasket(string username)
     {
-        throw new NotImplementedException();
+        var response = await this.client.GetAsync($"/api/v1/Basket/{username}");
+        return await response.ReadContentAs<BasketModel>();
     }
 }

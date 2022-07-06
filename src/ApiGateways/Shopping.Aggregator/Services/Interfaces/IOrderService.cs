@@ -4,5 +4,5 @@ using Shopping.Aggregator.Models;
 
 public interface IOrderService
 {
-    Task<IEnumerable<OrderResponseModel>> GetOrdersByUserName(string username);
+    Task<IEnumerable<OrderResponseModel>> GetOrdersByUsername(string username);
 }

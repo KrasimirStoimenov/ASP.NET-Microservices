@@ -9,4 +9,6 @@ public interface ICatalogService
     Task<IEnumerable<CatalogModel>> GetCatalog();
 
     Task<IEnumerable<CatalogModel>> GetCatalogByCategory(string category);
+
+    Task<IEnumerable<CatalogModel>> GetCatalogByName(string name);
 }

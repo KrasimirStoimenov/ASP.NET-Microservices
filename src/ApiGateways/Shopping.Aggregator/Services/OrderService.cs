@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using Shopping.Aggregator.Extensions;
 using Shopping.Aggregator.Models;
 using Shopping.Aggregator.Services.Interfaces;
 
@@ -15,8 +16,9 @@ public class OrderService : IOrderService
         this.client = client ?? throw new ArgumentNullException(nameof(client));
     }
 
-    public Task<IEnumerable<OrderResponseModel>> GetOrdersByUserName(string username)
+    public async Task<IEnumerable<OrderResponseModel>> GetOrdersByUsername(string username)
     {
-        throw new NotImplementedException();
+        var response = await this.client.GetAsync($"/api/v1/Order/{username}");
+        return await response.ReadContentAs<IEnumerable<OrderResponseModel>>();
     }
 }
