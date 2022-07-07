@@ -13,5 +13,7 @@ public interface ICatalogService
 
     Task<IEnumerable<CatalogModel>> GetCatalogByCategoryAsync(string category);
 
+    Task<IEnumerable<CatalogModel>> GetCatalogByNameAsync(string name);
+
     Task<CatalogModel> CreateCatalogAsync(CatalogModel model);
 }
