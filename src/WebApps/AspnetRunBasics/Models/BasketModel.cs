@@ -6,7 +6,7 @@ public class BasketModel
 {
     public string Username { get; set; }
 
-    public List<BsketItemModel> ShoppingCartItems { get; set; } = new List<BsketItemModel>();
+    public List<BasketItemModel> ShoppingCartItems { get; set; } = new List<BasketItemModel>();
 
     public decimal TotalPrice { get; set; }
 }

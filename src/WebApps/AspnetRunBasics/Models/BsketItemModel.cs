@@ -1,6 +1,6 @@
 ﻿namespace AspnetRunBasics.Models;
 
-public class BsketItemModel
+public class BasketItemModel
 {
     public int Quantity { get; set; }
 

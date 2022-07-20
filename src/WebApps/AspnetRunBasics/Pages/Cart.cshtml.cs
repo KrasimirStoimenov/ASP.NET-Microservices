@@ -1,34 +1,44 @@
-﻿using System;
+﻿namespace AspnetRunBasics;
+
+using System;
+using System.Linq;
 using System.Threading.Tasks;
-using AspnetRunBasics.Entities;
-using AspnetRunBasics.Repositories;
+
+using AspnetRunBasics.Models;
+using AspnetRunBasics.Services.Interfaces;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace AspnetRunBasics
+public class CartModel : PageModel
 {
-    public class CartModel : PageModel
+    private readonly IBasketService basketService;
+
+    public CartModel(IBasketService basketService)
     {
-        private readonly ICartRepository _cartRepository;
+        this.basketService = basketService ?? throw new ArgumentNullException(nameof(basketService));
+    }
 
-        public CartModel(ICartRepository cartRepository)
-        {
-            _cartRepository = cartRepository ?? throw new ArgumentNullException(nameof(cartRepository));
-        }
+    public BasketModel Cart { get; set; } = new BasketModel();
 
-        public Entities.Cart Cart { get; set; } = new Entities.Cart();        
+    public async Task<IActionResult> OnGetAsync()
+    {
+        string username = "ks";
+        this.Cart = await this.basketService.GetBasketAsync(username);
 
-        public async Task<IActionResult> OnGetAsync()
-        {
-            Cart = await _cartRepository.GetCartByUserName("test");            
+        return Page();
+    }
 
-            return Page();
-        }
+    public async Task<IActionResult> OnPostRemoveToCartAsync(string productId)
+    {
+        string username = "ks";
+        BasketModel basket = await this.basketService.GetBasketAsync(username);
 
-        public async Task<IActionResult> OnPostRemoveToCartAsync(int cartId, int cartItemId)
-        {
-            await _cartRepository.RemoveItem(cartId, cartItemId);
-            return RedirectToPage();
-        }
+        BasketItemModel item = basket.ShoppingCartItems.Single(x => x.ProductId == productId);
+        basket.ShoppingCartItems.Remove(item);
+
+        BasketModel basketUpdated = await this.basketService.UpdateBasketAsync(basket);
+
+        return RedirectToPage();
     }
 }

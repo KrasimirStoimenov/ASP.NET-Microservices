@@ -1,52 +1,67 @@
-﻿using System;
+﻿namespace AspnetRunBasics;
+
+using System;
 using System.Threading.Tasks;
-using AspnetRunBasics.Repositories;
+
+using AspnetRunBasics.Models;
+using AspnetRunBasics.Services.Interfaces;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace AspnetRunBasics
+public class ProductDetailModel : PageModel
 {
-    public class ProductDetailModel : PageModel
+    private readonly ICatalogService catalogService;
+    private readonly IBasketService basketService;
+
+    public ProductDetailModel(ICatalogService catalogService, IBasketService basketService)
     {
-        private readonly IProductRepository _productRepository;
-        private readonly ICartRepository _cartRepository;
+        this.catalogService = catalogService ?? throw new ArgumentNullException(nameof(catalogService));
+        this.basketService = basketService ?? throw new ArgumentNullException(nameof(basketService));
+    }
 
-        public ProductDetailModel(IProductRepository productRepository, ICartRepository cartRepository)
+    public CatalogModel Product { get; set; }
+
+    [BindProperty]
+    public string Color { get; set; }
+
+    [BindProperty]
+    public int Quantity { get; set; }
+
+    public async Task<IActionResult> OnGetAsync(string productId)
+    {
+        if (productId == null)
         {
-            _productRepository = productRepository ?? throw new ArgumentNullException(nameof(productRepository));
-            _cartRepository = cartRepository ?? throw new ArgumentNullException(nameof(cartRepository));
+            return NotFound();
         }
 
-        public Entities.Product Product { get; set; }
+        Product = await this.catalogService.GetCatalogAsync(productId);
 
-        [BindProperty]
-        public string Color { get; set; }
-
-        [BindProperty]
-        public int Quantity { get; set; }
-
-        public async Task<IActionResult> OnGetAsync(int? productId)
+        if (Product == null)
         {
-            if (productId == null)
-            {
-                return NotFound();
-            }
-
-            Product = await _productRepository.GetProductById(productId.Value);
-            if (Product == null)
-            {
-                return NotFound();
-            }
-            return Page();
+            return NotFound();
         }
+        return Page();
+    }
 
-        public async Task<IActionResult> OnPostAddToCartAsync(int productId)
+    public async Task<IActionResult> OnPostAddToCartAsync(string productId)
+    {
+        CatalogModel product = await this.catalogService.GetCatalogAsync(productId);
+
+        string username = "ks";
+        BasketModel basket = await this.basketService.GetBasketAsync(username);
+
+        basket.ShoppingCartItems.Add(new BasketItemModel
         {
-            //if (!User.Identity.IsAuthenticated)
-            //    return RedirectToPage("./Account/Login", new { area = "Identity" });
+            ProductId = productId,
+            ProductName = product.Name,
+            Price = product.Price,
+            Quantity = this.Quantity,
+            Color = this.Color
+        });
 
-            await _cartRepository.AddItem("test", productId, Quantity, Color);
-            return RedirectToPage("Cart");
-        }
+        BasketModel basketUpdated = await this.basketService.UpdateBasketAsync(basket);
+
+        return RedirectToPage("Cart");
     }
 }
