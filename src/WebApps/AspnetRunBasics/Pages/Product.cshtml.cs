@@ -34,7 +34,7 @@ public class ProductModel : PageModel
         IEnumerable<CatalogModel> productList = await this.catalogService.GetCatalogAsync();
         this.CategoryList = productList.Select(x => x.Category).Distinct();
 
-        if (string.IsNullOrWhiteSpace(categoryName))
+        if (!string.IsNullOrWhiteSpace(categoryName))
         {
             this.ProductList = productList.Where(c => c.Category == categoryName);
             this.SelectedCategory = categoryName;
